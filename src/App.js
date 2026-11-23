@@ -1,52 +1,57 @@
 import logo from './logo.svg';
 import { useState, useEffect, use } from 'react';
 
-//look at zybook 5.6.2 for examples of adding loading messages
+function TodoList(){
+  const [task, setTask] = useState("")
+  const [taskItems,setTaskItems] = useState([])
+
+  function addItem(event){
+    event.preventDefault()
+    const newItem = {
+      key: Date.now(),
+      text: task
+    }
+    setTaskItems(prevItems => [...prevItems, newItem])
+  }
+  return(
+      <>
+        <h1>Todo List</h1>
+        <form onSubmit={addItem}>
+          <label htmlFor='task'>Task?</label>
+          <input id='task' type='text' value={task} onChange={(e) => setTask(e.target.value)} />
+          <button type='submit'>Add</button>
+          
+        </form>
+        <TodoItems items={taskItems} />
+      </>
+  )
+}
+function TodoItems(props) {
+
+   const todoItems = props.items;
+
+   return (
+      <ol>
+         {todoItems.map((item) =>
+            <li key={item.key}>
+               {item.text}
+            </li>
+         )}
+      </ol>
+   );
+}
 
 
 function App() {
-  const [forecast, setForecast] = useState([{ high:0 }])
-  const [zip, setZip] = useState("90210")
-
-  function handleSubmit(event){
-    event.preventDefault()
-    setZip(event.target.zip.value)
-  }
-
-  //we need to grab data form the api and call useEffect to run an asynch fetch request
-  useEffect(() =>{
-    async function fetchForecast(){
-      const url = `https://wp.zybooks.com/weather.php?zip=${zip}`
-      const response = await fetch(url)
-      if (response.ok){
-        const result = await response.json()
-        if (result.success){
-          setForecast(result.forecast)
-        }
-      }
-    }
-    fetchForecast()
-  }, [zip])
   return (
-    <>
-      <h1>Five Day Weather Forecast</h1>
-      <form onSubmit={handleSubmit}>
-        <input type='number' id='zip' />
-        <button type='submit'>Submit</button>
-      </form>
-      <ol>
-        {forecast.map((day, index) =>(
-          <li key={index}>
-            High: {day.high}, Low: {day.low}, Descr: {day.desc}
-          </li>
-        ))}
-      </ol>
-      
-    </>
-   
-   
+  
+  <TodoList /> 
+  
+  
+)
 
-  )
+  
+
 
 }
 

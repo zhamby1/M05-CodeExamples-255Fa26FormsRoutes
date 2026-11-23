@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Link, useParams } from 'react-router-dom';
 
 
 
@@ -7,57 +7,33 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/about' element={<About />} />
-        <Route path='/products' element={<Products />} />
-        <Route path='*' element={<NotFound />} />
+        
+        <Route path="/products/:productId" element={<ProductDetails />} />
         
       </Routes>
-      <Navbar />
+      
     </BrowserRouter>
 
   )
 
 }
 
-function Navbar(){
-  return(
-    <nav>
-      <ul>
-        
-        <li>
-          <Link to="/">Home</Link>
-        </li>
+const products = [
+   { id: 111, name: "Blaze", desc: "About Blaze..." },
+   { id: 222, name: "Comet", desc: "About Comet..." },
+   { id: 333, name: "Doodle", desc: "About Doodle..." }
+];
 
-        <li>
-          <Link to="/products">Products</Link>
-        </li>
+function ProductDetails() {
+   const { productId } = useParams();
+   const product = products.find(prod => prod.id == productId);
 
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-
-
-      </ul>
-    </nav>
-  )
+   return (      
+      <>
+         <h1>Product Details</h1>
+         <p>Name: {product.name}</p>
+         <p>Description: {product.desc}</p>
+      </>
+   );
 }
-
-//now make all out of components we listed
-function Home(){
-  return <h1>Home</h1>
-}
-
-function Products(){
-  return <h1>Products</h1>
-}
-
-function About(){
-  return <h1>About</h1>
-}
-
-function NotFound(){
-  return <h1>Not Found</h1>
-}
-
 export default App;

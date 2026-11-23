@@ -1,10 +1,13 @@
 import logo from './logo.svg';
+import { useState } from 'react'; 
+
+
 function RegistrationForm() {
+   const [username, setUsername] = useState("");
 
    function handleSubmit(event) {
       event.preventDefault();
-      const form = event.target;
-      alert(`Username: ${form.username.value}`);
+      alert(`Username: ${username}`);
    }
 
    return (
@@ -15,7 +18,9 @@ function RegistrationForm() {
             </label>
             <input 
                type="text" 
-               id="username" />
+               id="username"
+               value={username}
+               onChange={(e) => setUsername(e.target.value)} />
          </p>
          <input type="submit" value="Register" />
       </form>

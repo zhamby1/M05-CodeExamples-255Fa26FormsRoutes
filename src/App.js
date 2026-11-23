@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import { useState, useEffect, use } from 'react';
 
+//look at zybook 5.6.2 for examples of adding loading messages
+
 
 function App() {
   const [forecast, setForecast] = useState([{ high:0 }])

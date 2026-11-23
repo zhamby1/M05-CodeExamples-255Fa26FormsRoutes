@@ -1,18 +1,47 @@
 import logo from './logo.svg';
-import { BrowserRouter, Route, Routes, Link, useParams } from 'react-router-dom';
+import { useState, useEffect, use } from 'react';
 
 
 function App() {
+  const [forecast, setForecast] = useState([{ high:0 }])
+  const [zip, setZip] = useState("90210")
+
+  function handleSubmit(event){
+    event.preventDefault()
+    setZip(event.target.zip.value)
+  }
+
+  //we need to grab data form the api and call useEffect to run an asynch fetch request
+  useEffect(() =>{
+    async function fetchForecast(){
+      const url = `https://wp.zybooks.com/weather.php?zip=${zip}`
+      const response = await fetch(url)
+      if (response.ok){
+        const result = await response.json()
+        if (result.success){
+          setForecast(result.forecast)
+        }
+      }
+    }
+    fetchForecast()
+  }, [zip])
   return (
-    <div className='m-3'>
-      <h1 className='display-1'>Boostrap Example</h1>
-      <p className='text-primary'>Boostrap constains many CSS classes to use</p>
-      <blockquote className='border w-25 p-2 shadow'>
-        <p className='fa-4'>Learning Bootstrap is fun</p>
-        <footer className='text-muted'>By Zach Hamby</footer>
-      </blockquote>
+    <>
+      <h1>Five Day Weather Forecast</h1>
+      <form onSubmit={handleSubmit}>
+        <input type='number' id='zip' />
+        <button type='submit'>Submit</button>
+      </form>
+      <ol>
+        {forecast.map((day, index) =>(
+          <li key={index}>
+            High: {day.high}, Low: {day.low}, Descr: {day.desc}
+          </li>
+        ))}
+      </ol>
       
-    </div>
+    </>
+   
    
 
   )

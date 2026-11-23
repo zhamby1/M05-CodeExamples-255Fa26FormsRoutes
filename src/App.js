@@ -1,90 +1,63 @@
 import logo from './logo.svg';
-import { useState } from 'react'; 
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 
 
-function RegistrationForm() {
-   const [inputs, setInputs] = useState({
-      shirtSize: "Medium",
-      notifications: true
-   });
-
-   function handleSubmit(event) {
-      event.preventDefault();
-      alert(`Username: ${inputs.username}\n` +
-            `Email: ${inputs.email}\n` +
-            `Shirt size: ${inputs.shirtSize}\n` +
-            `Notifications: ${inputs.notifications}\n` +
-            `Bio: ${inputs.bio}`);
-   }
-
-   function handleChange(event) {
-      const name = event.target.name;
-      const value = event.target.type === "checkbox" ?
-         event.target.checked : event.target.value;
-      setInputs(values => ({...values, [name]: value}));
-   }
-
-   return (
-      <form onSubmit={handleSubmit}>
-         <p>
-            <label htmlFor="username">
-               Username?
-            </label>
-            <input 
-               type="text" 
-               id="username"
-               name="username"
-               value={inputs.username || ""}
-               onChange={handleChange} />
-         </p>
-         <p>
-            <label htmlFor="email">
-               Email?
-            </label>
-            <input 
-               type="text" 
-               id="email"
-               name="email"
-               value={inputs.email || ""}
-               onChange={handleChange} />
-         </p>
-         <p>
-            <label htmlFor="shirtSize">
-               Shirt size?
-            </label>
-            <select id="shirtSize" name="shirtSize" 
-               value={inputs.shirtSize} onChange={handleChange}>
-               <option value="Small">Small</option>
-               <option value="Medium">Medium</option>
-               <option value="Large">Large</option>
-            </select>
-         </p>
-         <p>
-            <label htmlFor="notifications">
-               Receive notifications?
-            </label>
-            <input type="checkbox" id="notifications" name="notifications"
-               checked={inputs.notifications} onChange={handleChange} />
-         </p>
-         <p>
-            <label htmlFor="bio">
-               Short bio?
-            </label>
-            <textarea id="bio" name="bio" 
-               value={inputs.bio} onChange={handleChange} />
-         </p>
-
-         <input type="submit" value="Register" />
-      </form>
-   );
-}
 
 function App() {
   return (
-    <RegistrationForm />
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/products' element={<Products />} />
+        <Route path='*' element={<NotFound />} />
+        
+      </Routes>
+      <Navbar />
+    </BrowserRouter>
 
   )
 
+}
+
+function Navbar(){
+  return(
+    <nav>
+      <ul>
+        
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+
+        <li>
+          <Link to="/products">Products</Link>
+        </li>
+
+        <li>
+          <Link to="/about">About</Link>
+        </li>
+
+
+      </ul>
+    </nav>
+  )
+}
+
+//now make all out of components we listed
+function Home(){
+  return <h1>Home</h1>
+}
+
+function Products(){
+  return <h1>Products</h1>
+}
+
+function About(){
+  return <h1>About</h1>
+}
+
+function NotFound(){
+  return <h1>Not Found</h1>
 }
 
 export default App;
